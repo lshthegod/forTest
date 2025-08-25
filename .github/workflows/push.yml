@@ -1,0 +1,31 @@
+name: Push Chroma Changes
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  push-changes:
+    runs-on: ubuntu-latest
+    steps:
+      # task0: 파일들을 불러오기 (체크아웃)
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # task1: test.py 생성
+      - name: Create test.py
+        run: |
+          echo 'print("hello from test.py")' > test.py
+
+      # task2: 기존 파일 내용대로 push 수행
+      - name: Commit and Push
+        shell: bash
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add test.py || true
+          git diff --staged --quiet || (git commit -m "Update Vector DB" && git push)
