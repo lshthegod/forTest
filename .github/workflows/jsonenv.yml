@@ -1,0 +1,16 @@
+name: Json Env
+
+on:
+  workflow_dispatch:
+
+jobs:
+  show-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create gdrive-credentials.json
+        run: echo "${{ secrets.GDRIVE_CREDENTIALS_JSON }}" | base64 -d > gdrive-credentials.json
+        shell: bash
+      - name: Print gdrive-credentials.json
+        run: |
+          echo "gdrive-credentials.json contents:"
+          cat gdrive-credentials.json
